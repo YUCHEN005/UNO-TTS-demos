@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhancing Zero-shot Text-to-Speech Synthesis with Human Feedback</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Enhancing Zero-shot Text-to-Speech Synthesis with Human Feedback</h1>
+        <p>Chen Chen*, Yuchen Hu*, Wen Wu, Helin Wang, Eng Siong Chng, Chao Zhang</p>
+    </header>
+
+    <section>
+        <h2>Abstract</h2>
+        <p>In recent years, text-to-speech (TTS) technology has witnessed impressive advancements, particularly with large-scale training datasets, showcasing human-level speech quality and impressive zero-shot capabilities on unseen speakers. However, despite human subjective evaluations, such as the mean opinion score (MOS), remaining the gold standard for assessing the quality of synthetic speech, even state-of-the-art TTS approaches have kept human feedback isolated from training that resulted in mismatched training objectives and evaluation metrics. In this work, we investigate a novel topic of integrating subjective human evaluation into the TTS training loop. Inspired by the recent success of reinforcement learning from human feedback, we propose a comprehensive sampling-annotating-learning framework tailored to TTS optimization, namely uncertainty-aware optimization (UNO). Specifically, UNO eliminates the need for a reward model or preference data by directly maximizing the utility of speech generations while considering the uncertainty that lies in the inherent variability in subjective human speech perception and evaluations. Experimental results of both subjective and objective evaluations demonstrate that UNO considerably improves the zero-shot performance of TTS models in terms of MOS, word error rate, and speaker similarity. Additionally, we present a remarkable ability of UNO that it can adapt to the desired speaking style in emotional TTS seamlessly and flexibly.
+        </p>
+    </section>
+
+    <section>
+        <h2>UNO Framework</h2>
+        <img src="images/fig1.jpg" alt="The sampling-annotating-learning framework of UNO." style="width:100%; max-width:600px; display:block; margin:auto;">
+    </section>
+
+    <section>
+        <h2>Comparison of TTS Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>VoiceCraft</th>
+                    <th>UNO </th>
+                    <th>Issue Types</th>
+                    <th>Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Repeat this block for each comparison -->
+                 <tr>
+                    <td>1</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Truncation</td>
+                    <td>If a layman in giving baptism pour the water before saying the words is the child baptized</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Truncation + Low quality</td>
+                    <td>I will take the black clay with me also the pencil cuttings good bye</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_3.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_3.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Missing words</td>
+                    <td>I understand you to say that there are three students who use this stair and are in the habit of passing your door</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_4.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_4.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Missing words + unnatural</td>
+                    <td>He wore blue silk stockings blue knee pants with gold buckles a blue ruffled waist and a jacket of bright blue braided with gold</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_5.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_5.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Wrong pronunciation</td>
+                    <td>Four or five of the latter only lingered about the door of the prison of uncas wary but close observers of the manner of their captive</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_6.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_6.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Long pause</td>
+                    <td>It is the head of a parrot with a little flower in his beak from a picture of carpaccio's one of his series of the life of saint george</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_7.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_7.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Unnatural pause</td>
+                    <td>Uncas occupied a distant corner in a reclining attitude being rigidly bound both hands and feet by strong and painful withes</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/vc_8.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/saved_bad/uno_8.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>Flat tone</td>
+                    <td>Not only this but on the table i found a small ball of black dough or clay with specks of something which looks like sawdust in it</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Emotional TTS Results</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>VoiceCraft</th>
+                    <th>UNO (surprise)</th>
+                    <th>Arousal</th>
+                    <th>Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Repeat this block for each emotional TTS comparison -->
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/vc_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/surprise_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.48 &rarr; 0.69</td>
+                    <td>On friday confession will be heard all the afternoon after beads</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/vc_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/surprise_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.61 &rarr; 0.70</td>
+                    <td>It was a pain to see them and a sword like pain to see the signs of adolescence that made repellent their pitiable nakedness</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/vc_3.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/surprise_3.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.55 &rarr; 0.74</td>
+                    <td>It has no beauty whatsoever no specialty of picturesqueness and all its lines are cramped and poor</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/vc_4.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/surprise/surprise_4.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.53 &rarr; 0.71</td>
+                    <td>Well now ennis I declare you have a head and so has my stick</td>
+                </tr>
+
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>VoiceCraft</th>
+                    <th>UNO (happy)</th>
+                    <th>Valence</th>
+                    <th>Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Repeat this block for each emotional TTS comparison -->
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/vc_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/happy_1.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.51 &rarr; 0.65</td>
+                    <td>For a full hour he had paced up and down waiting but he could wait no longer</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/vc_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/happy_2.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.59 &rarr; 0.67</td>
+                    <td>For a long time he had wished to explore the beautiful land of oz in which they lived</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/vc_3.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/happy_3.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.52 &rarr; 0.67</td>
+                    <td>Pride after satisfaction uplifted him like long slow waves</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/vc_4.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>
+                        <audio controls>
+                            <source src="audios/happy/happy_4.wav" type="audio/wav">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </td>
+                    <td>0.48 &rarr; 0.71</td>
+                    <td>There was a unanimous groan at this and much reproach after which in his preoccupied way he explained</td>
+                </tr>
+
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+
+    </section>
+</body>
+</html>
